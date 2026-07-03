@@ -1,0 +1,160 @@
+{
+  "info": {
+    "name": "Tithe.ly API",
+    "description": "Tithe.ly church-giving platform API. Access is granted by request; approved partners receive public/private API keys. V2 REST endpoints (login, organizations, payment categories, transactions, mail) authenticate with the header 'Authorization: {API_ID}:{API_TOKEN}'. V1 payment endpoints (payment-methods, charge, charge-once) work with Tithely.js tokens. Test against tithelydev.com before going live on tithe.ly.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "Authorization", "type": "string" },
+      { "key": "value", "value": "{{apiId}}:{{apiToken}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrlV2", "value": "https://tithe.ly/api/v2" },
+    { "key": "baseUrlV1", "value": "https://tithe.ly/api/v1" },
+    { "key": "apiId", "value": "" },
+    { "key": "apiToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV2}}/login", "host": ["{{baseUrlV2}}"], "path": ["login"] },
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"\",\n  \"password\": \"\"\n}" },
+            "description": "Authenticate a user and receive the API ID and token for subsequent V2 requests."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "Retrieve organization(s)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrlV2}}/organization/:id", "host": ["{{baseUrlV2}}"], "path": ["organization", ":id"], "variable": [ { "key": "id", "value": "" } ] },
+            "description": "Retrieve a single organization by ID, or multiple via a comma-separated list."
+          }
+        },
+        {
+          "name": "Search organizations by owner",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrlV2}}/organization-owner/:id", "host": ["{{baseUrlV2}}"], "path": ["organization-owner", ":id"], "variable": [ { "key": "id", "value": "" } ] },
+            "description": "Return organizations owned by the given owner ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Categories",
+      "item": [
+        {
+          "name": "Retrieve payment category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrlV2}}/payment_category/:id", "host": ["{{baseUrlV2}}"], "path": ["payment_category", ":id"], "variable": [ { "key": "id", "value": "" } ] },
+            "description": "Retrieve a giving fund by ID."
+          }
+        },
+        {
+          "name": "Create payment category",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV2}}/payment_category", "host": ["{{baseUrlV2}}"], "path": ["payment_category"] },
+            "body": { "mode": "raw", "raw": "{\n  \"organization_id\": \"\",\n  \"name\": \"\",\n  \"active\": true\n}" },
+            "description": "Create a new giving fund for an organization."
+          }
+        },
+        {
+          "name": "Update payment category",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV2}}/payment_category/:id", "host": ["{{baseUrlV2}}"], "path": ["payment_category", ":id"], "variable": [ { "key": "id", "value": "" } ] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"\",\n  \"active\": true\n}" },
+            "description": "Update an existing giving fund."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create transaction",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV2}}/transaction", "host": ["{{baseUrlV2}}"], "path": ["transaction"] },
+            "body": { "mode": "raw", "raw": "{\n  \"organization_id\": \"\",\n  \"payment_category_id\": \"\",\n  \"amount\": 0,\n  \"currency\": \"USD\",\n  \"token\": \"\",\n  \"recurring\": false,\n  \"cover_fees\": false\n}" },
+            "description": "Record a giving transaction (one-time or recurring) against an organization and fund using a payment token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mail",
+      "item": [
+        {
+          "name": "Send mail",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV2}}/mail", "host": ["{{baseUrlV2}}"], "path": ["mail"] },
+            "body": { "mode": "raw", "raw": "{\n  \"to\": [\"\"],\n  \"template\": \"\",\n  \"data\": {}\n}" },
+            "description": "Send a templated transactional email to recipients."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments (V1)",
+      "item": [
+        {
+          "name": "Attach payment method",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV1}}/payment-methods", "host": ["{{baseUrlV1}}"], "path": ["payment-methods"] },
+            "body": { "mode": "raw", "raw": "{\n  \"user_id\": \"\",\n  \"token\": \"\"\n}" },
+            "description": "Attach a Tithely.js card/bank token to a user for repeat/recurring charges."
+          }
+        },
+        {
+          "name": "Charge stored payment method",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV1}}/charge", "host": ["{{baseUrlV1}}"], "path": ["charge"] },
+            "body": { "mode": "raw", "raw": "{\n  \"payment_method_id\": \"\",\n  \"amount\": 0,\n  \"currency\": \"USD\"\n}" },
+            "description": "Charge a previously stored payment method."
+          }
+        },
+        {
+          "name": "One-time charge",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrlV1}}/charge-once", "host": ["{{baseUrlV1}}"], "path": ["charge-once"] },
+            "body": { "mode": "raw", "raw": "{\n  \"token\": \"\",\n  \"amount\": 0,\n  \"currency\": \"USD\"\n}" },
+            "description": "Execute a single one-time charge against a Tithely.js token."
+          }
+        }
+      ]
+    }
+  ]
+}

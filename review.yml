@@ -1,0 +1,109 @@
+aid: tithely
+name: Tithe.ly
+review:
+  question: Does Tithe.ly expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-03'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Tithe.ly's documented developer surface is
+    request/response REST over HTTPS (a V1 payments/tokenization API and a V2 REST
+    API) plus a browser-side tokenization library (Tithely.js) that renders a
+    hosted iframe and returns a token. There is no server-push transport
+    (WebSocket or SSE) documented on Tithe.ly's public API, and no public webhook
+    or event-subscription surface is documented either, so there is no
+    event-driven interface to model.
+findings:
+  summary: |
+    Tithe.ly does not publish a documented public WebSocket API. Tithe.ly is a
+    church-technology platform (online/mobile giving, church management, apps,
+    sites). Its developer API is access-gated: access is granted by request to
+    organizations that use (or are moving to) Tithe.ly, and approved requesters
+    receive public and private API keys by email. Two generations are documented.
+    The V1 payments API handles PCI-safe tokenization via the hosted Tithely.js
+    library and charging of tokens (payment-methods, charge, charge-once). The V2
+    REST API (base https://tithe.ly/api/v2, header
+    "Authorization: {API_ID}:{API_TOKEN}") covers login, organizations, payment
+    categories (giving funds), donation transactions, and templated mail. All of
+    it is request/response REST over HTTPS. No realtime, bidirectional, or
+    streaming WebSocket (ws:// or wss://) endpoint is documented.
+  accessModel: |
+    Gated / partner-by-request. The only stated requirement is an association
+    with a church or organization that uses (or is moving to) Tithe.ly. Requesters
+    email support@tithe.ly describing what they intend to build and receive public
+    and private API keys on approval. A test environment (tithelydev.com) is used
+    before promoting to live (tithe.ly). Because full field-level request/response
+    schemas live behind the approved-partner developer docs, the OpenAPI in this
+    entry documents the publicly listed paths and methods with modeled request and
+    response bodies.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://tithe.ly/api/v2
+      documented: true
+      note: V2 REST API - login, organizations, payment categories, transactions, mail.
+    - protocol: REST
+      scheme: https
+      baseURL: https://tithe.ly/api/v1
+      documented: true
+      note: V1 payments/tokenization API - payment-methods, charge, charge-once. Test host is tithelydev.com.
+    - protocol: Browser SDK
+      scheme: https
+      documented: true
+      note: Tithely.js hosted iframe tokenization (createCardToken / createBankToken). Client-side, returns a token; not a server API transport.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Tithe.ly's V1 or V2 API as of the review date.
+    - protocol: Webhook
+      scheme: https
+      documented: false
+      note: No public webhook or event-subscription surface is documented in the public reference as of the review date.
+  endpointsConfirmedRest:
+    - POST https://tithe.ly/api/v2/login
+    - GET  https://tithe.ly/api/v2/organization/{id}
+    - GET  https://tithe.ly/api/v2/organization-owner/{id}
+    - GET  https://tithe.ly/api/v2/payment_category/{id}
+    - POST https://tithe.ly/api/v2/payment_category
+    - PUT  https://tithe.ly/api/v2/payment_category/{id}
+    - POST https://tithe.ly/api/v2/transaction
+    - POST https://tithe.ly/api/v2/mail
+    - POST https://tithe.ly/api/v1/payment-methods
+    - POST https://tithe.ly/api/v1/charge
+    - POST https://tithe.ly/api/v1/charge-once
+  endpointsModeled:
+    - note: >-
+        Paths and HTTP methods above are drawn from Tithe.ly's public docs
+        (tithe.ly/api/v2/docs and docs.tithe.ly). The request and response
+        bodies in openapi/tithely-openapi.yml are modeled from documented
+        behavior; exact field-level schemas are exposed only to approved
+        API-key holders in the private developer documentation.
+sources:
+  - url: https://docs.tithe.ly/reference/introduction
+    type: Documentation
+    note: Access is by request; approved requesters receive public/private API keys by email.
+  - url: https://docs.tithe.ly/reference/setup
+    type: Documentation
+    note: Test (tithelydev.com/api/v1) and live environments; test public/secret keys provided on access.
+  - url: https://docs.tithe.ly/reference/tokenization-with-tithelyjs-v2
+    type: Documentation
+    note: Tithely.js iframe tokenization; tokens charged via /api/v1/payment-methods, /charge, /charge-once.
+  - url: https://tithe.ly/api/v2/docs
+    type: APIReference
+    note: V2 endpoints - login, organization, organization-owner, payment_category CRUD, transaction, mail. Auth header "Authorization {API_ID}:{API_TOKEN}".
+  - url: https://github.com/tithely
+    type: SourceCode
+    note: Tithe.ly GitHub org (client gems/libraries, infra). No public OpenAPI repo.
+  - url: https://get.tithe.ly/pricing
+    type: Pricing
+    note: Free giving plan; per-transaction processing fees; ChMS/All-Access subscriptions.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists, and Tithe.ly's documented public API is
+    request/response REST (V1 payments and V2 REST) plus a browser-side
+    tokenization SDK. No AsyncAPI document was created because there is no
+    server-push transport (WebSocket/SSE) and no public webhook surface on
+    Tithe.ly's own API to model.

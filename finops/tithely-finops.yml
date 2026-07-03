@@ -1,0 +1,100 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Tithe.ly
+providerId: tithely
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Church Giving
+- Payments
+- Nonprofit
+- ChMS
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Tithe.ly spend. Tithe.ly is a payment-facilitator and
+  church-technology platform, so cost is driven primarily by per-donation
+  processing fees (percentage + fixed per transaction, varying by card / ACH /
+  Amex) rather than by API call volume. On top of processing, optional monthly
+  software subscriptions (church management, branded app, website, worship tools)
+  add fixed recurring cost. The developer API itself carries no separate metered
+  price. A distinctive lever is donor fee coverage - a large share of donors opt
+  to cover the processing fee, which materially reduces the church's net cost.
+notes: >-
+  Per-unit processing rates and subscription prices are those publicly reported
+  as of the review date; reconcile against get.tithe.ly/pricing. The dominant
+  cost driver for API integrators is transaction processing fees on giving
+  volume, not API usage.
+sources:
+- https://get.tithe.ly/pricing
+- https://help.tithe.ly/hc/en-us/articles/7442621160087-Tithely-Transaction-Fees-and-Subscription-Pricing
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Tithe.ly
+serviceCategory: Payments and Fundraising
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Tithe.ly Giving
+  ServiceCategory: Payments and Fundraising
+  ProviderName: Tithe.ly
+  PublisherName: Tithe.ly
+  InvoiceIssuerName: Tithe.ly
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: card_transaction_fee
+  description: Percentage + fixed fee on each card donation (~2.9% + $0.30).
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - organization
+  - payment_category
+- name: ach_transaction_fee
+  description: Percentage + fixed fee on each ACH donation (~1% + $0.30).
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - organization
+  - payment_category
+- name: amex_transaction_fee
+  description: Percentage + fixed fee on each American Express donation (~3.5% + $0.30).
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - organization
+  - payment_category
+- name: software_subscription
+  description: Fixed monthly subscription for ChMS / All-Access bundles.
+  unit: months
+  aggregation: sum
+  dimensions:
+  - organization
+  - plan
+principles:
+- name: Visibility
+  description: Track processing fees per organization and giving fund, separating card, ACH, and Amex mix, plus fixed monthly subscription cost.
+- name: Allocation
+  description: Attribute fees to funds (payment categories) and ministries so giving cost maps to programs.
+- name: Optimization
+  description: Encourage ACH over card where possible (lower fee), enable donor fee coverage, and right-size the software bundle to what is actually used.
+- name: Accountability
+  description: Assign an owner to review monthly processing fees and subscription spend against giving volume and budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

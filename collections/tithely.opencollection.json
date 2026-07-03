@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tithe.ly API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{apiId}}:{{apiToken}}",
+      "in": "header"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Accounts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Login", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/login",
+            "body": { "type": "json", "data": "{\n  \"email\": \"\",\n  \"password\": \"\"\n}" }
+          },
+          "docs": "Authenticate a user and receive the API ID and token used for subsequent V2 requests."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Organizations", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Retrieve organization(s)", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://tithe.ly/api/v2/organization/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "Organization ID or comma-separated list of IDs." }
+            ]
+          },
+          "docs": "Retrieve a single organization by ID, or multiple organizations via a comma-separated list."
+        },
+        {
+          "info": { "name": "Search organizations by owner", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://tithe.ly/api/v2/organization-owner/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "Owner (user) ID." }
+            ]
+          },
+          "docs": "Return organizations owned by the given owner ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payment Categories", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Retrieve payment category", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://tithe.ly/api/v2/payment_category/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "Payment category (fund) ID." }
+            ]
+          },
+          "docs": "Retrieve a giving fund by ID."
+        },
+        {
+          "info": { "name": "Create payment category", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/payment_category",
+            "body": { "type": "json", "data": "{\n  \"organization_id\": \"\",\n  \"name\": \"\",\n  \"active\": true\n}" }
+          },
+          "docs": "Create a new giving fund for an organization."
+        },
+        {
+          "info": { "name": "Update payment category", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://tithe.ly/api/v2/payment_category/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "Payment category (fund) ID." }
+            ],
+            "body": { "type": "json", "data": "{\n  \"name\": \"\",\n  \"active\": true\n}" }
+          },
+          "docs": "Update an existing giving fund."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Transactions", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create transaction", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/transaction",
+            "body": { "type": "json", "data": "{\n  \"organization_id\": \"\",\n  \"payment_category_id\": \"\",\n  \"amount\": 0,\n  \"currency\": \"USD\",\n  \"token\": \"\",\n  \"recurring\": false,\n  \"cover_fees\": false\n}" }
+          },
+          "docs": "Record a giving transaction (one-time or recurring) against an organization and fund using a payment token."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Mail", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Send mail", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/mail",
+            "body": { "type": "json", "data": "{\n  \"to\": [\"\"],\n  \"template\": \"\",\n  \"data\": {}\n}" }
+          },
+          "docs": "Send a templated transactional email to recipients."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payments (V1)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Attach payment method", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v1/payment-methods",
+            "body": { "type": "json", "data": "{\n  \"user_id\": \"\",\n  \"token\": \"\"\n}" }
+          },
+          "docs": "Attach a Tithely.js card/bank token to a user for repeat/recurring charges."
+        },
+        {
+          "info": { "name": "Charge stored payment method", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v1/charge",
+            "body": { "type": "json", "data": "{\n  \"payment_method_id\": \"\",\n  \"amount\": 0,\n  \"currency\": \"USD\"\n}" }
+          },
+          "docs": "Charge a previously stored payment method."
+        },
+        {
+          "info": { "name": "One-time charge", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v1/charge-once",
+            "body": { "type": "json", "data": "{\n  \"token\": \"\",\n  \"amount\": 0,\n  \"currency\": \"USD\"\n}" }
+          },
+          "docs": "Execute a single one-time charge against a Tithely.js token."
+        }
+      ]
+    }
+  ]
+}

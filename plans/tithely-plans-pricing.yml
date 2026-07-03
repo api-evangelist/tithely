@@ -1,0 +1,160 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Tithe.ly
+providerId: tithely
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Church Giving
+- Donations
+- Payments
+- Nonprofit
+- ChMS
+- Plans
+description: >-
+  Tithe.ly's platform pricing is split between per-transaction processing fees
+  (which apply to giving regardless of subscription) and monthly software
+  subscriptions for the broader suite (church management, apps, sites, events,
+  messaging). Online giving itself has a free-forever plan with no monthly fee.
+  The developer API is not sold as a separate metered product - it is access-gated
+  and granted by request to organizations that use (or are moving to) Tithe.ly,
+  with public/private keys issued on approval. There is no published per-call API
+  price; the money movement is priced through the standard giving transaction
+  fees below.
+notes: >-
+  Fees below reflect publicly reported Tithe.ly pricing as of the review date and
+  should be reconciled against get.tithe.ly/pricing. Card fee ~2.9% + $0.30, ACH
+  ~1% + $0.30, American Express ~3.5% + $0.30. Donors can opt to cover fees (about
+  60% do, per Tithe.ly), which offsets the church's cost. Software subscription
+  prices vary by bundle and are subject to change.
+sources:
+- https://get.tithe.ly/pricing
+- https://help.tithe.ly/hc/en-us/articles/7442621160087-Tithely-Transaction-Fees-and-Subscription-Pricing
+- https://docs.tithe.ly/reference/introduction
+plans:
+- id: tithely-giving-free
+  name: Giving (Free)
+  type: free
+  description: >-
+    Free-forever online and mobile giving with no setup fee and no monthly
+    subscription. Churches pay only the standard per-transaction processing fees.
+    API access is requested against a giving-enabled account.
+  entries:
+  - label: Monthly Subscription
+    name: giving_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '0.00'
+    userMultiplied: false
+  - label: Card Transaction Fee
+    name: card_fee
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 2.9% + $0.30 per card donation
+    userMultiplied: false
+  - label: ACH Transaction Fee
+    name: ach_fee
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 1% + $0.30 per ACH donation
+    userMultiplied: false
+  - label: American Express Fee
+    name: amex_fee
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 3.5% + $0.30 per Amex donation
+    userMultiplied: false
+  elements:
+  - name: Online & Mobile Giving
+  - name: Recurring Giving
+  - name: Giving Funds (Payment Categories)
+  - name: Donor Fee Coverage Option
+  - name: API Access (by request)
+- id: tithely-chms
+  name: Church Management (ChMS)
+  type: paid
+  description: >-
+    Church management software subscription (people, groups, communication,
+    events) layered on top of giving. Reported around $72/month.
+  entries:
+  - label: Monthly Subscription
+    name: chms_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$72/month (verify current pricing)
+    userMultiplied: false
+  elements:
+  - name: Church Management
+  - name: People & Groups
+  - name: Events
+  - name: Messaging
+  - name: Giving Included
+- id: tithely-all-access
+  name: All-Access Bundle
+  type: paid
+  description: >-
+    Bundle of giving, ChMS, a branded church app, a website builder, and worship
+    tools. Reported around $119/month.
+  entries:
+  - label: Monthly Subscription
+    name: all_access_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$119/month (verify current pricing)
+    userMultiplied: false
+  elements:
+  - name: Giving
+  - name: Church Management
+  - name: Branded Church App
+  - name: Website Builder
+  - name: Worship Tools
+- id: tithely-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom pricing for large organizations (reported 2,000+ attendees) with
+    negotiated processing rates and dedicated support.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Negotiated Rates
+  - name: Dedicated Support
+  - name: Custom Onboarding
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

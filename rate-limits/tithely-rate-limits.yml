@@ -1,0 +1,60 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Tithe.ly
+providerId: tithely
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Church Giving
+- Payments
+- API
+- Rate Limiting
+- Quotas
+description: >-
+  Tithe.ly does not publish fixed numeric rate limits in its public
+  documentation. The API is access-gated - approved partners receive public and
+  private API keys and are expected to build against a test environment
+  (tithelydev.com) before promoting to live (tithe.ly). Any specific per-key
+  throttles, concurrency ceilings, or payment velocity controls would be
+  communicated to approved integrators through the private developer materials
+  rather than the public docs. Clients should implement retry-with-backoff and
+  treat payment operations as non-idempotent unless an idempotency mechanism is
+  provided.
+notes: >-
+  No numeric per-minute or per-day request limits are documented publicly as of
+  the review date. Confirm any limits directly with Tithe.ly when API access is
+  granted (support@tithe.ly).
+sources:
+- https://docs.tithe.ly/reference/introduction
+- https://docs.tithe.ly/reference/setup
+- https://tithe.ly/api/v2/docs
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: api-key
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the V1 or V2 API.
+- name: Payment / Charge Velocity
+  scope: organization
+  metric: transactions
+  limit: not published
+  notes: Payment and charge operations may be subject to risk/velocity controls that are not publicly documented.
+- name: Test Environment
+  scope: api-key
+  metric: requests
+  limit: sandbox
+  notes: Integration testing is done against tithelydev.com with test keys before going live.
+policies:
+- name: Access by Request
+  description: API access is granted by request to organizations using or moving to Tithe.ly; keys are issued on approval.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+- name: Test Before Live
+  description: Build and validate against the tithelydev.com test hosts before switching to the live tithe.ly hosts.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
