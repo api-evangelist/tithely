@@ -157,6 +157,10 @@ apis:
     calls. All other V2 endpoints require the Authorization header formed from the
     issued API ID and API token.
 common:
+- type: DomainSecurity
+  url: security/tithely-domain-security.yml
+- type: Authentication
+  url: authentication/tithely-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/tithely
 - type: LinkedIn
@@ -171,6 +175,8 @@ common:
   url: rate-limits/tithely-rate-limits.yml
 - type: FinOps
   url: finops/tithely-finops.yml
+- type: Blog
+  url: https://get.tithe.ly/blog/rss.xml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

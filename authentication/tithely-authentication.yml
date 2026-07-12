@@ -1,0 +1,18 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/tithely-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: apiKeyAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: 'V2 requests use the header "Authorization: {API_ID}:{API_TOKEN}", where the
+    ID and token come from the public/private API keys issued on access approval (and via the
+    login endpoint). V1 payment calls use the private key issued on approval.'
+  sources:
+  - openapi/tithely-openapi.yml
