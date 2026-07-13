@@ -1,0 +1,13 @@
+{
+  "repo": "tithely",
+  "feeds": [
+    {
+      "source": "https://get.tithe.ly/blog/rss.xml",
+      "feed_url": "https://get.tithe.ly/blog/rss.xml",
+      "title": "Tithe.ly Blog",
+      "saved": 33
+    }
+  ],
+  "fetched": "2026-07-11T11:43:46Z",
+  "post_count": 58
+}
