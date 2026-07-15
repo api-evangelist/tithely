@@ -157,6 +157,8 @@ apis:
     calls. All other V2 endpoints require the Authorization header formed from the
     issued API ID and API token.
 common:
+- type: AgenticAccess
+  url: agentic-access/tithely-agentic-access.yml
 - type: DomainSecurity
   url: security/tithely-domain-security.yml
 - type: Authentication
