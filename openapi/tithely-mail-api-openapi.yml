@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Tithe.ly Accounts Mail API
+  description: 'The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform. Access is gated: it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. Two documented generations are modeled here. The V1 payments API handles PCI-safe tokenization (via the hosted Tithely.js library) and charging of tokenized cards and bank accounts. The V2 REST API handles login, organizations, payment categories (giving funds), donation transactions, and templated mail. Endpoint paths and methods are drawn from Tithe.ly''s public documentation; request and response schemas are modeled from the documented behavior because the full field-level schemas are only exposed to approved API-key holders in the private developer docs. Test traffic uses the tithelydev.com hosts; production uses tithe.ly.'
+  version: '2.0'
+  contact:
+    name: Tithe.ly Support
+    url: https://docs.tithe.ly/reference/introduction
+    email: support@tithe.ly
+servers:
+- url: https://tithe.ly/api/v2
+  description: V2 REST API (live)
+- url: https://tithe.ly/api/v1
+  description: V1 payments/tokenization API (live)
+- url: https://tithelydev.com/api/v1
+  description: V1 payments/tokenization API (test/sandbox)
+tags:
+- name: Mail
+  description: Send templated transactional email.
+paths:
+  /mail:
+    post:
+      operationId: sendMail
+      tags:
+      - Mail
+      summary: Send templated email
+      description: Sends a templated transactional email to one or more recipients.
+      security:
+      - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MailInput'
+      responses:
+        '200':
+          description: Mail accepted for delivery.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    MailInput:
+      type: object
+      required:
+      - to
+      - template
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+            format: email
+        template:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'V2 requests use the header "Authorization: {API_ID}:{API_TOKEN}", where the ID and token come from the public/private API keys issued on access approval (and via the login endpoint). V1 payment calls use the private key issued on approval.'

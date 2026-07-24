@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Tithe.ly Accounts API
+  description: 'The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform. Access is gated: it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. Two documented generations are modeled here. The V1 payments API handles PCI-safe tokenization (via the hosted Tithely.js library) and charging of tokenized cards and bank accounts. The V2 REST API handles login, organizations, payment categories (giving funds), donation transactions, and templated mail. Endpoint paths and methods are drawn from Tithe.ly''s public documentation; request and response schemas are modeled from the documented behavior because the full field-level schemas are only exposed to approved API-key holders in the private developer docs. Test traffic uses the tithelydev.com hosts; production uses tithe.ly.'
+  version: '2.0'
+  contact:
+    name: Tithe.ly Support
+    url: https://docs.tithe.ly/reference/introduction
+    email: support@tithe.ly
+servers:
+- url: https://tithe.ly/api/v2
+  description: V2 REST API (live)
+- url: https://tithe.ly/api/v1
+  description: V1 payments/tokenization API (live)
+- url: https://tithelydev.com/api/v1
+  description: V1 payments/tokenization API (test/sandbox)
+tags:
+- name: Accounts
+  description: Authentication and login.
+paths:
+  /login:
+    post:
+      operationId: login
+      tags:
+      - Accounts
+      summary: Authenticate a user
+      description: Authenticates a user and returns the credentials used to form the Authorization header for subsequent V2 requests. This is the only V2 endpoint that does not itself require the Authorization header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Authenticated. Returns API identity and token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    LoginResult:
+      type: object
+      description: Modeled. Returns the identity/token used to build the Authorization header.
+      properties:
+        api_id:
+          type: string
+        api_token:
+          type: string
+        user_id:
+          type: string
+    LoginInput:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'V2 requests use the header "Authorization: {API_ID}:{API_TOKEN}", where the ID and token come from the public/private API keys issued on access approval (and via the login endpoint). V1 payment calls use the private key issued on approval.'

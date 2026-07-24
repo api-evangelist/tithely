@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: Tithe.ly Accounts Payment Categories API
+  description: 'The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform. Access is gated: it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. Two documented generations are modeled here. The V1 payments API handles PCI-safe tokenization (via the hosted Tithely.js library) and charging of tokenized cards and bank accounts. The V2 REST API handles login, organizations, payment categories (giving funds), donation transactions, and templated mail. Endpoint paths and methods are drawn from Tithe.ly''s public documentation; request and response schemas are modeled from the documented behavior because the full field-level schemas are only exposed to approved API-key holders in the private developer docs. Test traffic uses the tithelydev.com hosts; production uses tithe.ly.'
+  version: '2.0'
+  contact:
+    name: Tithe.ly Support
+    url: https://docs.tithe.ly/reference/introduction
+    email: support@tithe.ly
+servers:
+- url: https://tithe.ly/api/v2
+  description: V2 REST API (live)
+- url: https://tithe.ly/api/v1
+  description: V1 payments/tokenization API (live)
+- url: https://tithelydev.com/api/v1
+  description: V1 payments/tokenization API (test/sandbox)
+tags:
+- name: Payment Categories
+  description: Giving funds a donation is allocated to.
+paths:
+  /payment_category/{id}:
+    get:
+      operationId: getPaymentCategory
+      tags:
+      - Payment Categories
+      summary: Retrieve a payment category (fund)
+      security:
+      - apiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested payment category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCategory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updatePaymentCategory
+      tags:
+      - Payment Categories
+      summary: Update a payment category (fund)
+      security:
+      - apiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCategoryInput'
+      responses:
+        '200':
+          description: The updated payment category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCategory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payment_category:
+    post:
+      operationId: createPaymentCategory
+      tags:
+      - Payment Categories
+      summary: Create a payment category (fund)
+      security:
+      - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCategoryInput'
+      responses:
+        '200':
+          description: The created payment category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCategory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    PaymentCategory:
+      type: object
+      description: A giving fund. Modeled.
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+    PaymentCategoryInput:
+      type: object
+      required:
+      - organization_id
+      - name
+      properties:
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+  responses:
+    Unauthorized:
+      description: Missing or invalid API credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'V2 requests use the header "Authorization: {API_ID}:{API_TOKEN}", where the ID and token come from the public/private API keys issued on access approval (and via the login endpoint). V1 payment calls use the private key issued on approval.'
