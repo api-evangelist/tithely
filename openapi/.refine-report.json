@@ -1,0 +1,24 @@
+{
+  "provider": "tithely",
+  "sources": [
+    "tithely-accounts-api-openapi.yml",
+    "tithely-mail-api-openapi.yml",
+    "tithely-organizations-api-openapi.yml",
+    "tithely-payment-categories-api-openapi.yml",
+    "tithely-payments-api-openapi.yml",
+    "tithely-transactions-api-openapi.yml"
+  ],
+  "outputs": [
+    "tithely-accounts-api-openapi.yml",
+    "tithely-mail-api-openapi.yml",
+    "tithely-organizations-api-openapi.yml",
+    "tithely-payment-categories-api-openapi.yml",
+    "tithely-payments-api-openapi.yml",
+    "tithely-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

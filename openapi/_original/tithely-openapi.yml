@@ -1,0 +1,564 @@
+openapi: 3.0.3
+info:
+  title: Tithe.ly API
+  description: >-
+    The Tithe.ly API lets churches and approved partners integrate with the
+    Tithe.ly giving and church-technology platform. Access is gated: it is
+    granted by request to organizations that use (or are moving to) Tithe.ly,
+    and approved requesters receive public and private API keys by email. Two
+    documented generations are modeled here. The V1 payments API handles
+    PCI-safe tokenization (via the hosted Tithely.js library) and charging of
+    tokenized cards and bank accounts. The V2 REST API handles login,
+    organizations, payment categories (giving funds), donation transactions,
+    and templated mail. Endpoint paths and methods are drawn from Tithe.ly's
+    public documentation; request and response schemas are modeled from the
+    documented behavior because the full field-level schemas are only exposed to
+    approved API-key holders in the private developer docs. Test traffic uses the
+    tithelydev.com hosts; production uses tithe.ly.
+  version: '2.0'
+  contact:
+    name: Tithe.ly Support
+    url: https://docs.tithe.ly/reference/introduction
+    email: support@tithe.ly
+servers:
+  - url: https://tithe.ly/api/v2
+    description: V2 REST API (live)
+  - url: https://tithe.ly/api/v1
+    description: V1 payments/tokenization API (live)
+  - url: https://tithelydev.com/api/v1
+    description: V1 payments/tokenization API (test/sandbox)
+tags:
+  - name: Accounts
+    description: Authentication and login.
+  - name: Organizations
+    description: Look up churches/organizations.
+  - name: Payment Categories
+    description: Giving funds a donation is allocated to.
+  - name: Transactions
+    description: Create donation transactions.
+  - name: Mail
+    description: Send templated transactional email.
+  - name: Payments
+    description: V1 tokenized payment methods and charges.
+paths:
+  /login:
+    post:
+      operationId: login
+      tags:
+        - Accounts
+      summary: Authenticate a user
+      description: >-
+        Authenticates a user and returns the credentials used to form the
+        Authorization header for subsequent V2 requests. This is the only V2
+        endpoint that does not itself require the Authorization header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Authenticated. Returns API identity and token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organization/{id}:
+    get:
+      operationId: getOrganization
+      tags:
+        - Organizations
+      summary: Retrieve one or more organizations
+      description: >-
+        Retrieves a single organization by ID, or multiple organizations when a
+        comma-separated list of IDs is supplied.
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Organization ID, or comma-separated list of organization IDs.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested organization(s).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organization-owner/{id}:
+    get:
+      operationId: getOrganizationsByOwner
+      tags:
+        - Organizations
+      summary: Search organizations by owner
+      description: Returns the organizations owned by the given owner (user) ID.
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Owner (user) ID.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Organizations for the owner.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payment_category/{id}:
+    get:
+      operationId: getPaymentCategory
+      tags:
+        - Payment Categories
+      summary: Retrieve a payment category (fund)
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested payment category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCategory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updatePaymentCategory
+      tags:
+        - Payment Categories
+      summary: Update a payment category (fund)
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCategoryInput'
+      responses:
+        '200':
+          description: The updated payment category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCategory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payment_category:
+    post:
+      operationId: createPaymentCategory
+      tags:
+        - Payment Categories
+      summary: Create a payment category (fund)
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCategoryInput'
+      responses:
+        '200':
+          description: The created payment category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCategory'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /transaction:
+    post:
+      operationId: createTransaction
+      tags:
+        - Transactions
+      summary: Create a donation transaction
+      description: >-
+        Records a giving transaction against an organization and payment
+        category using a tokenized payment method. Supports one-time and
+        recurring giving.
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionInput'
+      responses:
+        '200':
+          description: The created transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation error (e.g. invalid amount, token, or fund).
+  /mail:
+    post:
+      operationId: sendMail
+      tags:
+        - Mail
+      summary: Send templated email
+      description: Sends a templated transactional email to one or more recipients.
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MailInput'
+      responses:
+        '200':
+          description: Mail accepted for delivery.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payment-methods:
+    post:
+      operationId: createPaymentMethod
+      tags:
+        - Payments
+      summary: Attach a tokenized payment method to a user
+      description: >-
+        V1 endpoint. Attaches a card or bank token produced by Tithely.js to a
+        user so it can be charged repeatedly (e.g. recurring giving). Base URL is
+        the V1 host (live https://tithe.ly/api/v1, test
+        https://tithelydev.com/api/v1).
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodInput'
+      responses:
+        '200':
+          description: The stored payment method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethod'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /charge:
+    post:
+      operationId: charge
+      tags:
+        - Payments
+      summary: Charge a stored payment method
+      description: >-
+        V1 endpoint. Charges a previously stored payment method - used for
+        repeat and recurring giving.
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargeInput'
+      responses:
+        '200':
+          description: The charge result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargeResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          description: Payment failed / declined.
+  /charge-once:
+    post:
+      operationId: chargeOnce
+      tags:
+        - Payments
+      summary: One-time charge of a token
+      description: >-
+        V1 endpoint. Executes a single one-time charge against a token produced
+        by Tithely.js without storing the payment method.
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargeOnceInput'
+      responses:
+        '200':
+          description: The charge result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargeResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          description: Payment failed / declined.
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        V2 requests use the header "Authorization: {API_ID}:{API_TOKEN}", where
+        the ID and token come from the public/private API keys issued on access
+        approval (and via the login endpoint). V1 payment calls use the private
+        key issued on approval.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    LoginInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    LoginResult:
+      type: object
+      description: Modeled. Returns the identity/token used to build the Authorization header.
+      properties:
+        api_id:
+          type: string
+        api_token:
+          type: string
+        user_id:
+          type: string
+    Organization:
+      type: object
+      description: Modeled from documented organization lookup responses.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        owner_id:
+          type: string
+        status:
+          type: string
+    PaymentCategory:
+      type: object
+      description: A giving fund. Modeled.
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+    PaymentCategoryInput:
+      type: object
+      required:
+        - organization_id
+        - name
+      properties:
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+    TransactionInput:
+      type: object
+      description: Modeled donation transaction request.
+      required:
+        - organization_id
+        - amount
+      properties:
+        organization_id:
+          type: string
+        payment_category_id:
+          type: string
+          description: The giving fund this donation is allocated to.
+        amount:
+          type: integer
+          description: Amount in the smallest currency unit (e.g. cents).
+        currency:
+          type: string
+          default: USD
+        token:
+          type: string
+          description: Payment token from Tithely.js.
+        recurring:
+          type: boolean
+          description: Whether this establishes a recurring gift.
+        frequency:
+          type: string
+          description: Recurrence interval when recurring is true.
+          enum:
+            - weekly
+            - biweekly
+            - monthly
+        cover_fees:
+          type: boolean
+          description: Whether the donor is covering transaction fees.
+    Transaction:
+      type: object
+      description: Modeled.
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        payment_category_id:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+        recurring:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    MailInput:
+      type: object
+      required:
+        - to
+        - template
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+            format: email
+        template:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+    PaymentMethodInput:
+      type: object
+      required:
+        - user_id
+        - token
+      properties:
+        user_id:
+          type: string
+        token:
+          type: string
+          description: Card or bank token from Tithely.js.
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        last4:
+          type: string
+        type:
+          type: string
+          enum:
+            - card
+            - bank
+    ChargeInput:
+      type: object
+      required:
+        - payment_method_id
+        - amount
+      properties:
+        payment_method_id:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+          default: USD
+    ChargeOnceInput:
+      type: object
+      required:
+        - token
+        - amount
+      properties:
+        token:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+          default: USD
+    ChargeResult:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
