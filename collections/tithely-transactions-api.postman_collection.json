@@ -1,0 +1,245 @@
+{
+  "item": [
+    {
+      "id": "c32d3caf-7377-4522-b5eb-f64d3581460b",
+      "name": "Transactions",
+      "description": {
+        "content": "Create donation transactions.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "51eccdf3-d381-482b-993d-fba1bd7998e9",
+          "name": "Create a donation transaction",
+          "request": {
+            "name": "Create a donation transaction",
+            "description": {
+              "content": "Records a giving transaction against an organization and payment category using a tokenized payment method. Supports one-time and recurring giving.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transaction"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organization_id\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"payment_category_id\": \"<string>\",\n  \"currency\": \"USD\",\n  \"token\": \"<string>\",\n  \"recurring\": \"<boolean>\",\n  \"frequency\": \"<string>\",\n  \"cover_fees\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dcbc02f4-c6ed-4fa1-a3c5-15ea560bc227",
+              "name": "The created transaction.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transaction"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organization_id\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"payment_category_id\": \"<string>\",\n  \"currency\": \"USD\",\n  \"token\": \"<string>\",\n  \"recurring\": \"<boolean>\",\n  \"frequency\": \"<string>\",\n  \"cover_fees\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"organization_id\": \"string\",\n  \"payment_category_id\": \"string\",\n  \"amount\": 5491,\n  \"currency\": \"string\",\n  \"status\": \"string\",\n  \"recurring\": true,\n  \"created_at\": \"2023-10-20T18:18:47.227Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d9bf483-b45d-4128-9bba-b4b11cb30199",
+              "name": "Missing or invalid API credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transaction"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organization_id\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"payment_category_id\": \"<string>\",\n  \"currency\": \"USD\",\n  \"token\": \"<string>\",\n  \"recurring\": \"<boolean>\",\n  \"frequency\": \"<string>\",\n  \"cover_fees\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7e309bd-252f-4991-b3ad-8b396e6c6456",
+              "name": "Validation error (e.g. invalid amount, token, or fund).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transaction"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organization_id\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"payment_category_id\": \"<string>\",\n  \"currency\": \"USD\",\n  \"token\": \"<string>\",\n  \"recurring\": \"<boolean>\",\n  \"frequency\": \"<string>\",\n  \"cover_fees\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://tithe.ly/api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "23ef0a80-6472-4505-b6d6-77883c53548b",
+    "name": "Tithe.ly Accounts Transactions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform. Access is gated: it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. Two documented generations are modeled here. The V1 payments API handles PCI-safe tokenization (via the hosted Tithely.js library) and charging of tokenized cards and bank accounts. The V2 REST API handles login, organizations, payment categories (giving funds), donation transactions, and templated mail. Endpoint paths and methods are drawn from Tithe.ly's public documentation; request and response schemas are modeled from the documented behavior because the full field-level schemas are only exposed to approved API-key holders in the private developer docs. Test traffic uses the tithelydev.com hosts; production uses tithe.ly.\n\nContact Support:\n Name: Tithe.ly Support\n Email: support@tithe.ly",
+      "type": "text/plain"
+    }
+  }
+}

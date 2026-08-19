@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tithe.ly Accounts API",
+    "version": "2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authenticate a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/login",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticates a user and returns the credentials used to form the Authorization header for subsequent V2 requests. This is the only V2 endpoint that does not itself require the Authorization header."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

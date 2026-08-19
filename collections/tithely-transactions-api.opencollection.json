@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tithe.ly Accounts Transactions API",
+    "version": "2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a donation transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/transaction",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Records a giving transaction against an organization and payment category using a tokenized payment method. Supports one-time and recurring giving."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

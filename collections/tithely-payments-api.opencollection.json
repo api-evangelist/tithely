@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tithe.ly Accounts Payments API",
+    "version": "2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Attach a tokenized payment method to a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/payment-methods",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "V1 endpoint. Attaches a card or bank token produced by Tithely.js to a user so it can be charged repeatedly (e.g. recurring giving). Base URL is the V1 host (live https://tithe.ly/api/v1, test https://tithelydev.com/api/v1)."
+        },
+        {
+          "info": {
+            "name": "Charge a stored payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/charge",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "V1 endpoint. Charges a previously stored payment method - used for repeat and recurring giving."
+        },
+        {
+          "info": {
+            "name": "One-time charge of a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/charge-once",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "V1 endpoint. Executes a single one-time charge against a token produced by Tithely.js without storing the payment method."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

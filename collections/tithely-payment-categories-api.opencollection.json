@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tithe.ly Accounts Payment Categories API",
+    "version": "2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment Categories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a payment category (fund)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tithe.ly/api/v2/payment_category/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a payment category (fund)"
+        },
+        {
+          "info": {
+            "name": "Update a payment category (fund)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://tithe.ly/api/v2/payment_category/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a payment category (fund)"
+        },
+        {
+          "info": {
+            "name": "Create a payment category (fund)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tithe.ly/api/v2/payment_category",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a payment category (fund)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
