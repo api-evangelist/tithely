@@ -31,6 +31,14 @@ tags:
 - Donations
 - Fundraising
 - Payments
+- Non-Profit
+- ChMS
+- Faith
+tags_raw:
+- Church Giving
+- Donations
+- Fundraising
+- Payments
 - Nonprofit
 - ChMS
 - Faith
@@ -44,6 +52,8 @@ apis:
   humanURL: https://tithe.ly/api/v2/docs
   baseURL: https://tithe.ly/api/v2
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -88,6 +98,8 @@ apis:
   humanURL: https://tithe.ly/api/v2/docs
   baseURL: https://tithe.ly/api/v2
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -154,6 +166,8 @@ apis:
   humanURL: https://tithe.ly/api/v2/docs
   baseURL: https://tithe.ly/api/v2
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
