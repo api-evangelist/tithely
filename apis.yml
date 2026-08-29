@@ -12,6 +12,18 @@ description: Tithe.ly is a church technology platform for online and mobile givi
   There are two documented generations - a V1 payments/tokenization API (Tithely.js
   plus charge endpoints) and a V2 REST API (organizations, transactions, funds, and
   mail).
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
