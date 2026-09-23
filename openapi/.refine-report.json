@@ -1,12 +1,7 @@
 {
   "provider": "tithely",
   "sources": [
-    "tithely-accounts-api-openapi.yml",
-    "tithely-mail-api-openapi.yml",
-    "tithely-organizations-api-openapi.yml",
-    "tithely-payment-categories-api-openapi.yml",
-    "tithely-payments-api-openapi.yml",
-    "tithely-transactions-api-openapi.yml"
+    "_original/tithely-openapi.yml"
   ],
   "outputs": [
     "tithely-accounts-api-openapi.yml",
@@ -19,6 +14,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "tithely-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "tithely-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tithely-mail-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tithely-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tithely-payment-categories-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tithely-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tithely-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

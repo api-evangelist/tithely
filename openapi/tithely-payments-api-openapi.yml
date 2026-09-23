@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tithe.ly Accounts Payments API
-  description: 'The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform. Access is gated: it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. Two documented generations are modeled here. The V1 payments API handles PCI-safe tokenization (via the hosted Tithely.js library) and charging of tokenized cards and bank accounts. The V2 REST API handles login, organizations, payment categories (giving funds), donation transactions, and templated mail. Endpoint paths and methods are drawn from Tithe.ly''s public documentation; request and response schemas are modeled from the documented behavior because the full field-level schemas are only exposed to approved API-key holders in the private developer docs. Test traffic uses the tithelydev.com hosts; production uses tithe.ly.'
+  title: Tithe.ly Payments API
+  description: The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform.
   version: '2.0'
   contact:
     name: Tithe.ly Support
@@ -96,30 +96,6 @@ paths:
           description: Payment failed / declined.
 components:
   schemas:
-    PaymentMethodInput:
-      type: object
-      required:
-      - user_id
-      - token
-      properties:
-        user_id:
-          type: string
-        token:
-          type: string
-          description: Card or bank token from Tithely.js.
-    ChargeOnceInput:
-      type: object
-      required:
-      - token
-      - amount
-      properties:
-        token:
-          type: string
-        amount:
-          type: integer
-        currency:
-          type: string
-          default: USD
     Error:
       type: object
       properties:
@@ -127,20 +103,6 @@ components:
           type: string
         message:
           type: string
-    PaymentMethod:
-      type: object
-      properties:
-        id:
-          type: string
-        user_id:
-          type: string
-        last4:
-          type: string
-        type:
-          type: string
-          enum:
-          - card
-          - bank
     ChargeResult:
       type: object
       properties:
@@ -165,6 +127,44 @@ components:
         currency:
           type: string
           default: USD
+    ChargeOnceInput:
+      type: object
+      required:
+      - token
+      - amount
+      properties:
+        token:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+          default: USD
+    PaymentMethodInput:
+      type: object
+      required:
+      - user_id
+      - token
+      properties:
+        user_id:
+          type: string
+        token:
+          type: string
+          description: Card or bank token from Tithely.js.
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        last4:
+          type: string
+        type:
+          type: string
+          enum:
+          - card
+          - bank
   responses:
     Unauthorized:
       description: Missing or invalid API credentials.

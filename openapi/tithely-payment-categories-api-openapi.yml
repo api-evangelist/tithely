@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tithe.ly Accounts Payment Categories API
-  description: 'The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform. Access is gated: it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. Two documented generations are modeled here. The V1 payments API handles PCI-safe tokenization (via the hosted Tithely.js library) and charging of tokenized cards and bank accounts. The V2 REST API handles login, organizations, payment categories (giving funds), donation transactions, and templated mail. Endpoint paths and methods are drawn from Tithe.ly''s public documentation; request and response schemas are modeled from the documented behavior because the full field-level schemas are only exposed to approved API-key holders in the private developer docs. Test traffic uses the tithelydev.com hosts; production uses tithe.ly.'
+  title: Tithe.ly Payment Categories API
+  description: The Tithe.ly API lets churches and approved partners integrate with the Tithe.ly giving and church-technology platform.
   version: '2.0'
   contact:
     name: Tithe.ly Support
@@ -103,24 +103,24 @@ components:
           type: string
         message:
           type: string
-    PaymentCategory:
-      type: object
-      description: A giving fund. Modeled.
-      properties:
-        id:
-          type: string
-        organization_id:
-          type: string
-        name:
-          type: string
-        active:
-          type: boolean
     PaymentCategoryInput:
       type: object
       required:
       - organization_id
       - name
       properties:
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+    PaymentCategory:
+      type: object
+      description: A giving fund. Modeled.
+      properties:
+        id:
+          type: string
         organization_id:
           type: string
         name:
