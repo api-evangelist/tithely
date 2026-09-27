@@ -95,38 +95,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    PaymentCategoryInput:
-      type: object
-      required:
-      - organization_id
-      - name
-      properties:
-        organization_id:
-          type: string
-        name:
-          type: string
-        active:
-          type: boolean
-    PaymentCategory:
-      type: object
-      description: A giving fund. Modeled.
-      properties:
-        id:
-          type: string
-        organization_id:
-          type: string
-        name:
-          type: string
-        active:
-          type: boolean
   responses:
     Unauthorized:
       description: Missing or invalid API credentials.
@@ -140,6 +108,38 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  schemas:
+    PaymentCategory:
+      type: object
+      description: A giving fund. Modeled.
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+    PaymentCategoryInput:
+      type: object
+      required:
+      - organization_id
+      - name
+      properties:
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   securitySchemes:
     apiKeyAuth:
       type: apiKey

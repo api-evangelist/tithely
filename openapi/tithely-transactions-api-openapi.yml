@@ -45,21 +45,28 @@ paths:
         '422':
           description: Validation error (e.g. invalid amount, token, or fund).
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
+    Transaction:
       type: object
+      description: Modeled.
       properties:
-        error:
+        id:
           type: string
-        message:
+        organization_id:
           type: string
+        payment_category_id:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+        recurring:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
     TransactionInput:
       type: object
       description: Modeled donation transaction request.
@@ -94,27 +101,20 @@ components:
         cover_fees:
           type: boolean
           description: Whether the donor is covering transaction fees.
-    Transaction:
+    Error:
       type: object
-      description: Modeled.
       properties:
-        id:
+        error:
           type: string
-        organization_id:
+        message:
           type: string
-        payment_category_id:
-          type: string
-        amount:
-          type: integer
-        currency:
-          type: string
-        status:
-          type: string
-        recurring:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing or invalid API credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     apiKeyAuth:
       type: apiKey
