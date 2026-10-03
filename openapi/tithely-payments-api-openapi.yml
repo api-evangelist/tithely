@@ -96,27 +96,13 @@ paths:
           description: Payment failed / declined.
 components:
   schemas:
-    PaymentMethod:
-      type: object
-      properties:
-        id:
-          type: string
-        user_id:
-          type: string
-        last4:
-          type: string
-        type:
-          type: string
-          enum:
-          - card
-          - bank
-    ChargeOnceInput:
+    ChargeInput:
       type: object
       required:
-      - token
+      - payment_method_id
       - amount
       properties:
-        token:
+        payment_method_id:
           type: string
         amount:
           type: integer
@@ -134,6 +120,13 @@ components:
         token:
           type: string
           description: Card or bank token from Tithely.js.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     ChargeResult:
       type: object
       properties:
@@ -145,26 +138,33 @@ components:
           type: integer
         currency:
           type: string
-    ChargeInput:
+    ChargeOnceInput:
       type: object
       required:
-      - payment_method_id
+      - token
       - amount
       properties:
-        payment_method_id:
+        token:
           type: string
         amount:
           type: integer
         currency:
           type: string
           default: USD
-    Error:
+    PaymentMethod:
       type: object
       properties:
-        error:
+        id:
           type: string
-        message:
+        user_id:
           type: string
+        last4:
+          type: string
+        type:
+          type: string
+          enum:
+          - card
+          - bank
   responses:
     Unauthorized:
       description: Missing or invalid API credentials.

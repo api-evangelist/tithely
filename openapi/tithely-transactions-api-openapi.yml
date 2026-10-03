@@ -46,27 +46,6 @@ paths:
           description: Validation error (e.g. invalid amount, token, or fund).
 components:
   schemas:
-    Transaction:
-      type: object
-      description: Modeled.
-      properties:
-        id:
-          type: string
-        organization_id:
-          type: string
-        payment_category_id:
-          type: string
-        amount:
-          type: integer
-        currency:
-          type: string
-        status:
-          type: string
-        recurring:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
     TransactionInput:
       type: object
       description: Modeled donation transaction request.
@@ -108,6 +87,27 @@ components:
           type: string
         message:
           type: string
+    Transaction:
+      type: object
+      description: Modeled.
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        payment_category_id:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+        recurring:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
   responses:
     Unauthorized:
       description: Missing or invalid API credentials.

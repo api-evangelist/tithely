@@ -49,6 +49,13 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     LoginResult:
       type: object
       description: Modeled. Returns the identity/token used to build the Authorization header.
@@ -71,13 +78,6 @@ components:
         password:
           type: string
           format: password
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
   securitySchemes:
     apiKeyAuth:
       type: apiKey
