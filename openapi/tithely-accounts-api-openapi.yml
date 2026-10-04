@@ -56,16 +56,6 @@ components:
           type: string
         message:
           type: string
-    LoginResult:
-      type: object
-      description: Modeled. Returns the identity/token used to build the Authorization header.
-      properties:
-        api_id:
-          type: string
-        api_token:
-          type: string
-        user_id:
-          type: string
     LoginInput:
       type: object
       required:
@@ -78,6 +68,16 @@ components:
         password:
           type: string
           format: password
+    LoginResult:
+      type: object
+      description: Modeled. Returns the identity/token used to build the Authorization header.
+      properties:
+        api_id:
+          type: string
+        api_token:
+          type: string
+        user_id:
+          type: string
   securitySchemes:
     apiKeyAuth:
       type: apiKey

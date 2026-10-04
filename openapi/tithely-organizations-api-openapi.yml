@@ -81,26 +81,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Organization:
-      type: object
-      description: Modeled from documented organization lookup responses.
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        owner_id:
-          type: string
-        status:
-          type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
   responses:
     Unauthorized:
       description: Missing or invalid API credentials.
@@ -114,6 +94,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Organization:
+      type: object
+      description: Modeled from documented organization lookup responses.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        owner_id:
+          type: string
+        status:
+          type: string
   securitySchemes:
     apiKeyAuth:
       type: apiKey
