@@ -96,6 +96,18 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    PaymentCategory:
+      type: object
+      description: A giving fund. Modeled.
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
     PaymentCategoryInput:
       type: object
       required:
@@ -115,27 +127,15 @@ components:
           type: string
         message:
           type: string
-    PaymentCategory:
-      type: object
-      description: A giving fund. Modeled.
-      properties:
-        id:
-          type: string
-        organization_id:
-          type: string
-        name:
-          type: string
-        active:
-          type: boolean
   responses:
-    Unauthorized:
-      description: Missing or invalid API credentials.
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
+    Unauthorized:
+      description: Missing or invalid API credentials.
       content:
         application/json:
           schema:
