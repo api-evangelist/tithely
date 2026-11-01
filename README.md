@@ -1,4 +1,4 @@
-# Tithe.ly (tithely)
+# Tithe.ly
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,111 +64,128 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Tithe.ly is a church-technology platform for online and mobile giving, church management (ChMS), branded church apps, websites, events, and messaging. Its developer API lets churches and approved partners create donations, tokenize cards and bank accounts for PCI-safe payments, charge one-time and recurring gifts, manage giving funds (payment categories), and look up organizations.
+Tithe.ly is a church technology platform for online and mobile giving, church management (ChMS), branded church apps, websites, events, and messaging. Its developer API lets churches and approved partners create donations, tokenize cards and bank accounts for PCI-safe payments, charge one-time and recurring gifts, manage giving funds (payment categories), and look up organizations. API access is gated - it is granted by request to organizations that use (or are moving to) Tithe.ly, and approved requesters receive public and private API keys by email. There are two documented generations - a V1 payments/tokenization API (Tithely.js plus charge endpoints) and a V2 REST API (organizations, transactions, funds, and mail).
 
-**Access is gated.** The Tithe.ly API is granted **by request** to organizations that use (or are moving to) Tithe.ly. You email `support@tithe.ly`, describe what you want to build, and approved requesters receive **public and private API keys** by email. Integrators build and validate against a test environment (`tithelydev.com`) before promoting to the live environment (`tithe.ly`). Two generations are documented: a **V1** payments/tokenization API (Tithely.js plus charge endpoints) and a **V2** REST API (organizations, transactions, funds, and mail).
+**Areas:** Church Giving · Donations · Fundraising · Payments · Non-Profit · ChMS · Faith
 
-Because full field-level request/response schemas live behind the approved-partner developer docs, the OpenAPI in this entry documents the **publicly listed paths and methods** with **modeled** request and response bodies. See `review.yml` for the confirmed vs. modeled breakdown.
+## Tithe.ly on APIs.io
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/tithely/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/tithely/refs/heads/main/apis.yml)
+Everything profiled for Tithe.ly is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/tithely/](https://apis.io/providers/tithely/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (6)
 
-- Church Giving
-- Donations
-- Fundraising
-- Payments
-- Nonprofit
-- ChMS
-- Faith
+- [Tithe.ly Accounts API](https://apis.io/apis/tithely/tithely-accounts-api/) — Authentication and login.
+- [Tithe.ly Mail API](https://apis.io/apis/tithely/tithely-mail-api/) — Send templated transactional email.
+- [Tithe.ly Organizations API](https://apis.io/apis/tithely/tithely-organizations-api/) — Look up churches/organizations.
+- [Tithe.ly Payment Categories API](https://apis.io/apis/tithely/tithely-payment-categories-api/) — Giving funds a donation is allocated to.
+- [Tithe.ly Payments API](https://apis.io/apis/tithely/tithely-payments-api/) — V1 tokenized payment methods and charges.
+- [Tithe.ly Transactions API](https://apis.io/apis/tithely/tithely-transactions-api/) — Create donation transactions.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-07-03
-- **Modified:** 2026-07-03
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Authentication
+#### Agentic access (1)
 
-- **V2 REST API** (`https://tithe.ly/api/v2`): header `Authorization: {API_ID}:{API_TOKEN}`. The `POST /login` endpoint is the only V2 call that does not require the header.
-- **V1 payments API** (`https://tithe.ly/api/v1`, test `https://tithelydev.com/api/v1`): uses the private key issued on approval; payment methods are created from tokens produced client-side by Tithely.js.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## APIs
+- [Tithely Agentic Access](https://apis.io/agentic-access/tithely/tithely-agentic-access/)
 
-### Tithe.ly Transactions API
+#### Collections (7)
 
-Create donation transactions (one-time or recurring) against an organization and a payment category (fund) using a tokenized payment method.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://tithe.ly/api/v2/docs](https://tithe.ly/api/v2/docs)
-- **Base URL:** `https://tithe.ly/api/v2`
+- [Tithe.ly API](https://apis.io/collections/tithely/open-tithely/)
+- [Tithe.ly Accounts API](https://apis.io/collections/tithely/open-tithely-accounts-api/)
+- [Tithe.ly Accounts Mail API](https://apis.io/collections/tithely/open-tithely-mail-api/)
+- [Tithe.ly Accounts Organizations API](https://apis.io/collections/tithely/open-tithely-organizations-api/)
+- [Tithe.ly Accounts Payment Categories API](https://apis.io/collections/tithely/open-tithely-payment-categories-api/)
+- [Tithe.ly Accounts Payments API](https://apis.io/collections/tithely/open-tithely-payments-api/)
+- [Tithe.ly Accounts Transactions API](https://apis.io/collections/tithely/open-tithely-transactions-api/)
 
-### Tithe.ly Payments & Tokenization API
+#### Security (2)
 
-PCI-safe payment flow. Tithely.js renders a hosted iframe to tokenize a card or bank account client-side; the resulting token is attached to a user via `payment-methods` and charged with `charge` (repeat/recurring) or `charge-once` (one-time).
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.tithe.ly/reference/tokenization-with-tithelyjs-v2](https://docs.tithe.ly/reference/tokenization-with-tithelyjs-v2)
-- **Base URL:** `https://tithe.ly/api/v1` (test `https://tithelydev.com/api/v1`)
+- [Tithely Authentication](https://apis.io/security/tithely/tithely-authentication/)
+- [Tithely Domain Security](https://apis.io/security/tithely/tithely-domain-security/)
 
-### Tithe.ly Organizations API
+#### Plans and pricing (1)
 
-Retrieve one or more Tithe.ly organizations (churches) by ID, and search organizations by owner.
+Published plans, tiers and prices.
 
-- **Human URL:** [https://tithe.ly/api/v2/docs](https://tithe.ly/api/v2/docs)
-- **Base URL:** `https://tithe.ly/api/v2`
+- [Tithely Plans Pricing](https://apis.io/plans/tithely/tithely-plans-pricing/)
 
-### Tithe.ly Payment Categories (Funds) API
+#### Rate limits (1)
 
-Create, read, and update payment categories - Tithe.ly's giving funds that donations are allocated to for a given organization.
+Published request limits.
 
-- **Human URL:** [https://tithe.ly/api/v2/docs](https://tithe.ly/api/v2/docs)
-- **Base URL:** `https://tithe.ly/api/v2`
+- [Tithely Rate Limits](https://apis.io/rate-limits/tithely/tithely-rate-limits/)
 
-### Tithe.ly Mail API
+#### FinOps (1)
 
-Send templated transactional emails (such as giving receipts and notifications) to recipients on behalf of an organization.
+What the API costs to run, by operation.
 
-- **Human URL:** [https://tithe.ly/api/v2/docs](https://tithe.ly/api/v2/docs)
-- **Base URL:** `https://tithe.ly/api/v2`
+- [Tithely Finops](https://apis.io/finops/tithely/tithely-finops/)
 
-### Tithe.ly Accounts API
+## Where to find this API
 
-Authenticate a user and obtain the credentials used for subsequent V2 calls.
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- **Human URL:** [https://tithe.ly/api/v2/docs](https://tithe.ly/api/v2/docs)
-- **Base URL:** `https://tithe.ly/api/v2`
-
-## Confirmed Endpoints
-
-- `POST /api/v2/login`
-- `GET  /api/v2/organization/{id}`
-- `GET  /api/v2/organization-owner/{id}`
-- `GET  /api/v2/payment_category/{id}`
-- `POST /api/v2/payment_category`
-- `PUT  /api/v2/payment_category/{id}`
-- `POST /api/v2/transaction`
-- `POST /api/v2/mail`
-- `POST /api/v1/payment-methods`
-- `POST /api/v1/charge`
-- `POST /api/v1/charge-once`
-
-## Pricing (summary)
-
-Online giving has a free-forever plan (no monthly fee); churches pay per-transaction processing fees: ~2.9% + $0.30 (card), ~1% + $0.30 (ACH), ~3.5% + $0.30 (Amex). Donors can opt to cover fees. Software subscriptions (ChMS ~$72/mo, All-Access ~$119/mo) and Enterprise (custom) add fixed cost. The API itself has no separate metered price. Verify current rates at [get.tithe.ly/pricing](https://get.tithe.ly/pricing). See `plans/tithely-plans-pricing.yml`, `rate-limits/tithely-rate-limits.yml`, and `finops/tithely-finops.yml`.
-
-## WebSocket Review
-
-Does Tithe.ly expose a documented public WebSocket API? **No.** Tithe.ly's documented developer surface is request/response REST (V1 payments + V2 REST) plus the browser-side Tithely.js tokenization library. No WebSocket or public webhook/event-subscription surface is documented. See `review.yml`.
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/tithely)
-- [LinkedIn](https://www.linkedin.com/company/tithe-ly)
 - [Website](https://get.tithe.ly/)
 - [Documentation](https://docs.tithe.ly/reference/introduction)
-- [Plans](plans/tithely-plans-pricing.yml)
-- [Rate Limits](rate-limits/tithely-rate-limits.yml)
-- [Fin Ops](finops/tithely-finops.yml)
+- [Blog](https://get.tithe.ly/blog/rss.xml)
+- [GitHub](https://github.com/tithely)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 25.4** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 49.6 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 27.4 |
+| Access clarity | 7.9 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.7** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/tithely/](https://apis.io/providers/tithely/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Tithe.ly: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/tithely/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
